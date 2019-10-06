@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fumiya.count_android.R
+import com.fumiya.count_android.data.FirestoreAPI
 import kotlinx.android.synthetic.main.activity_count_list.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.coroutines.launch
 
 class CountListActivity : ScopedAppActivity() {
 
@@ -23,18 +25,24 @@ class CountListActivity : ScopedAppActivity() {
             val countTextView = itemView.countTextView
         }
 
-        recyclerView.adapter = object: RecyclerView.Adapter<myViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myViewHolder {
-                val itemView = LayoutInflater.from(parent.context).inflate(R.layout.count_list_item_view, parent, false)
-                return myViewHolder(itemView)
-            }
+        launch {
+            val countList =  FirestoreAPI.get("count")
 
-            override fun onBindViewHolder(holder: myViewHolder, position: Int) {
-                holder.titleTextView.setText(position.toString())
-            }
+            recyclerView.adapter = object: RecyclerView.Adapter<myViewHolder>() {
 
-            override fun getItemCount(): Int {
-                return 3
+                override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): myViewHolder {
+                    val itemView = LayoutInflater.from(parent.context).inflate(R.layout.count_list_item_view, parent, false)
+                    return myViewHolder(itemView)
+                }
+
+                override fun onBindViewHolder(holder: myViewHolder, position: Int) {
+                    holder.titleTextView.setText(countList[position].title)
+                    holder.countTextView.setText(countList[position].amount.toString())
+                }
+
+                override fun getItemCount(): Int {
+                    return countList.count()
+                }
             }
         }
     }

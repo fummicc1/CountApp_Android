@@ -4,9 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.fumiya.count_android.R
+import com.fumiya.count_android.data.AuthAPI
 import com.fumiya.count_android.data.Count
+import com.fumiya.count_android.data.FirestoreAPI
 import com.fumiya.count_android.data.Status
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -36,11 +39,22 @@ class MainActivity : ScopedAppActivity() {
         }
 
         saveButton.setOnClickListener {
+            AuthAPI.currentUser?.let { user ->
+                count.date = Date()
+                count.senderID = user.uid
+                FirestoreAPI.create("count", count)
+            }
         }
 
         listButton.setOnClickListener {
             val intent = Intent(this, CountListActivity::class.java)
             startActivity(intent)
+        }
+
+        saveButton.isEnabled = false
+        launch {
+            AuthAPI.signInAnonymously()
+            saveButton.isEnabled = true
         }
     }
 }
