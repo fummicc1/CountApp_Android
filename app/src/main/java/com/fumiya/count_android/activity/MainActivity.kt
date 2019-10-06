@@ -1,23 +1,30 @@
-package com.fumiya.count_android
+package com.fumiya.count_android.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.fumiya.count_android.R
+import com.fumiya.count_android.data.Count
+import com.fumiya.count_android.data.Status
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.concurrent.thread
+import java.util.*
 
-class MainActivity : AppCompatActivity() {
 
-    var count: Count = Count()
+class MainActivity : ScopedAppActivity() {
+
+    var count: Count = Count(
+        senderID = "",
+        id = "",
+        title = "",
+        amount = 0,
+        date = Date(),
+        saveCount = 0,
+        status = Status.privateCount
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        thread {
-            val countList = CountDatabase.instance(applicationContext).countDAO().getAll()
-            print("countList")
-            print(countList)
-        }
 
         plusButton.setOnClickListener {
             count.amount += 1
@@ -29,9 +36,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         saveButton.setOnClickListener {
-            thread {
-                CountDatabase.instance(it.context).countDAO().insert(count)
-            }
+        }
+
+        listButton.setOnClickListener {
+            val intent = Intent(this, CountListActivity::class.java)
+            startActivity(intent)
         }
     }
 }
