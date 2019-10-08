@@ -39,22 +39,12 @@ class MainActivity : ScopedAppActivity() {
         }
 
         saveButton.setOnClickListener {
-            AuthAPI.currentUser?.let { user ->
-                count.date = Date()
-                count.senderID = user.uid
-                FirestoreAPI.create("count", count)
-            }
+
         }
 
         listButton.setOnClickListener {
             val intent = Intent(this, CountListActivity::class.java)
             startActivity(intent)
-        }
-
-        saveButton.isEnabled = false
-        launch {
-            AuthAPI.signInAnonymously()
-            saveButton.isEnabled = true
         }
     }
 }
