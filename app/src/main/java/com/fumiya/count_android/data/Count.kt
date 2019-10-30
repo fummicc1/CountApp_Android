@@ -11,8 +11,7 @@ data class Count(
     var amount: Int,
     var date: Date,
     var saveCount: Int,
-    var status: Status
-) {
-    var isMine = true
-}
+    var status: Status,
+    var isMine: Boolean
+)
 

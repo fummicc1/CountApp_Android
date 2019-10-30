@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.AddCountActivity">
 
     <TextView
         android:id="@+id/titleTextView"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:autoText="true"
         android:gravity="center"
-        android:text="Add Count!"
+        android:text=
         android:textSize="36sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

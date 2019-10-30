@@ -8,34 +8,25 @@ import com.fumiya.count_android.data.AuthAPI
 import com.fumiya.count_android.data.Count
 import com.fumiya.count_android.data.FirestoreAPI
 import com.fumiya.count_android.data.Status
+import com.fumiya.count_android.view_model.AddCountViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 import java.util.*
 
 
-class MainActivity : ScopedAppActivity() {
+class AddCountActivity : ScopedAppActivity() {
 
-    var count: Count = Count(
-        senderID = "",
-        id = "",
-        title = "",
-        amount = 0,
-        date = Date(),
-        saveCount = 0,
-        status = Status.privateCount
-    )
+    lateinit var viewModel: AddCountViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        viewModel = AddCountViewModel()
+
         plusButton.setOnClickListener {
-            count.amount += 1
-            countTextView.text = count.amount.toString()
         }
         minusButton.setOnClickListener {
-            count.amount -= 1
-            countTextView.text = count.amount.toString()
         }
 
         saveButton.setOnClickListener {
